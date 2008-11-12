@@ -1,0 +1,184 @@
+#!/usr/bin/perl 
+#
+# Overall documentation script for the Doppler
+# tomography routines. It runs the standard routine
+# document.pl on each of a set of files and then
+# generates indices for them.
+
+require "document.pl";
+
+$time = localtime;
+
+(@ARGV == 1) or die "usage: docgen.pl directory\n";
+
+$html = shift;
+
+# Command classes. Individual files require pointers
+# to these to get into them.
+
+%classes = (
+	    'Arithematic'    => 'Image/trail arithematic commands.',
+	    'Display'        => 'Commands for display.',
+	    'Doppler images' => 'Commands to do with Doppler images.',
+	    'Noise'          => 'Commands which analyse/add noise.',
+	    'Fake'           => 'Faking/testing commands.',
+	    'Trailed spectra'=> 'Commands to do with trailed spectra.',	    
+	    'Inversion'      => 'Commands directly related to trailed --> map inversion.',
+	    );
+
+# now generate individual command documentation.
+
+foreach $file ('dplot.cc',  'dtmem.cc',  'dnadd.cc',  'darith.cc',   
+	       'dcirc.cc',  'dclip.cc',  'dcont.cc',  'dcor.cc',   
+               'dspot.cc',  'dtinfo.cc', 'dnanal.cc', 'drank.cc',  
+               'dsymm.cc',  'dtscl.cc',  'dvar.cc',   'fdplot.cc', 
+               'tback.cc',  'tboot.cc',  'tarith.cc', 'tfilt.cc',  
+               'tgen.cc',   'tnadd.cc',  'tplot.cc',  'dinit.cc',
+	       'dgdef.cc',  'dgdist.cc', 'dline.cc',  'tgauss.cc',
+	       'tmolly.cc'){
+
+    document("../src/$file",$html,"html","html","");
+}
+
+# generate overall index file
+
+open(INDEX, ">$html/index.html") or die "Could not open index file\n";
+print INDEX <<END1;
+<html>
+<head>
+<title>C++ Doppler tomography</title>
+<link rel=stylesheet href="style.css" type="text/css">
+</head>
+<body>
+<h1>C++ Doppler tomography, version ZzZzZ</h1>
+<p>
+This is the main page for documentation on the suite of
+C++ Doppler tomography programs. Below are links to
+complete alphabetically arranged command lists and 
+smaller listed of commands arranged into groups.
+If it is your first time, the guide gives a very brief
+description of how to get started.
+
+<p>
+<table>
+<tr><td><a href="Alphabet.html">Alphabetical</a></td>
+<td>Alphabetical list of all commands.</td></tr>
+<tr><td><a href="Classified.html">Classified</a></td>
+<td>Commands groups into classes.</td></tr>
+<tr><td><a href="Guide.html">Guide</a></td>
+<td>A guide to get started with the programs.</td></tr>
+</table>
+
+<p><hr>
+<address>Page generated $time</address>
+</body></html>
+END1
+close(INDEX);
+
+open(CLASSI, ">$html/Classified.html") or die "Could not open class index file\n";
+print CLASSI <<END2;
+<html>
+<head>
+<title>C++ Doppler tomography class list</title>
+<link rel=stylesheet href="style.css" type="text/css">
+</head>
+<body>
+<h1>C++ Doppler tomography class list</h1>
+<p>
+This page gives links to lists of commands grouped by class.
+The same command may appear in more than one list.
+
+<p>
+<table>
+END2
+
+# write class entries and class pages at the same time
+
+foreach $class (sort keys %classes){
+    print CLASSI
+	"<tr><td><a href=\"$class.html\">$class</a></td>".
+	    "<td>$classes{$class}</td></tr>\n";
+
+    open(CLASS,">$html/$class.html") or die "Could not open html/$class.html\n";
+    print CLASS "<html>\n";
+    print CLASS "<title>$classes{$class}</title>\n";
+    print CLASS "<link rel=stylesheet href=\"style.css\" type=\"text/css\">\n";
+    print CLASS "</head>\n<body>\n";
+    print CLASS "<h1>$classes{$class}</h1>\n\n<p>\n";
+    print CLASS "<table>\n";
+    foreach $item (sort keys %index){
+	$print = 0;
+	foreach $clss (@{$index{$item}->{class}}){
+	    if($clss eq $class){$print = 1;}
+	}
+	if($print){
+	    print CLASS "<tr><td><a href=\"$index{$item}->{file}\">$item</a>".
+		"</td><td>$index{$item}->{description}</td>\n";
+	}
+    }
+    print CLASS "</table><p><hr>\n";
+    print CLASS "<address>Page generated $time</address>\n";
+    print CLASS "</body></html>\n";
+    close(CLASS);
+}
+
+# finish off class index file
+
+print CLASSI <<END3;
+</table>
+
+<p><hr>
+<address>Page generated $time</address>
+</body></html>
+END3
+close(CLASSI);
+
+
+# write alphabetical list of all commands.
+
+open(ALPHA, ">$html/Alphabet.html") or die "Could not open command list\n";
+print ALPHA <<END4;
+<html>
+<head>
+<title>List of Doppler Tomography commands</title>
+<link rel=stylesheet href="style.css" type="text/css">
+</head>
+<body>
+<h1>Doppler Tomography command list</h1>
+<p>
+This page gives links to all commands in the C++
+Doppler tomography package. The convention has usually
+been followed that "d" stands for Doppler images, and 
+"t" for trailed spectra, so for instance 
+<a href="dplot.html">dplot</a> deals with plotting
+Doppler images while <a href="tplot.html">tplot</a>
+handles trailed spectra, and 
+<a href="dtmem.html">dtmem</a> involves both.
+
+
+<p>
+<table>
+END4
+
+foreach $item (sort keys %index){
+    print ALPHA "<tr><td><a href=\"$index{$item}->{file}\">$item</a>".
+	"</td><td>$index{$item}->{description}</td>\n";
+}
+
+print ALPHA "</table><p><hr>\n";
+print ALPHA "<address>Page generated $time</address>\n";
+print ALPHA "</body></html>\n";
+close(ALPHA);
+
+exit;
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,38 @@
+<html>
+<title>Guide to the C++ Doppler tomography programs</title>
+<body bgcolor="#ffffff">
+<h1>A Guide to the C++ Doppler tomography programs</h1>
+<p>
+The C++ Doppler tomography programs are a suite of programs
+for generating trailed spectra and Doppler images, and performing
+various operations on them.
+
+<p>
+To get started, first use <a href="dgen.html">dgen</a> to create
+a map. You can use this more than once and then combine the results
+with <a href="dadd.html">dadd</a> or <a href="dsub.html">dsub</a> to 
+create a more complex map. You can also add constants to the result with
+<a href="dadd.html">dadd</a>.
+
+<p>
+Once you have a map which you like (check it with 
+<a href="dplot.html">dplot</a>), then you can compute
+a trailed spectrum from it with <a href="tgen.html">tgen</a>.
+You can add noise to this with <a href="tnadd.html">tnadd</a>,
+and then invert with <a href="dtmem.html">dtmem</a> (MEM)
+or <a href="tfilt.html">tfilt</a> followed by <a href="tback.html">tback</a>
+(filtered back-projection).
+
+<p>
+Other routines such as <a href="dvar.html">dvar</a>
+and <a href="dcor.html">dcor</a> allow you to analyse noise.
+
+<p>
+Finally, the file input and output routines recognise '-' as
+indicating standard input and output. This allows you to chain
+commands together and is often useful. e.g.<br><br>
+tnadd test_trail 20 10 0 7971 1 - | tplot -80 /xs<br><br>
+which add noise to a trail and then plots it without saving it.
+
+</body>
+</html>
