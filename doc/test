@@ -1,7 +1,0 @@
-#! /bin/sh -v
-
-for file in `find html | sed -e 's% %\\\%'`; do \
-    echo "old file = $file"; \
-    nfile=`echo $file | sed -e 's%\\\% %'` 
-    echo "new file = $nfile"; \
-done
