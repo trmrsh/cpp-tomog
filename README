@@ -1,8 +1,6 @@
 
-This directory contains everythng to do with the
-C++ Doppler tomography programs. Your best place
-to start is probably html/index.html
+C++ doppler tomography programs.
 
-Look in the makefile for installation.
+Installation order: subs, mem --> colly --> tomog
 
-Tom Marsh
+See www.astro.warwick.ac.uk/people/marsh/software for further info
