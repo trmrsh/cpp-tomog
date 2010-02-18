@@ -8,7 +8,7 @@ AM_CONFIG_HEADER(config.h)
 
 dnl automake stuff
 
-AM_INIT_AUTOMAKE(tomog, 1.0.4)
+AM_INIT_AUTOMAKE(tomog, 1.0.5)
 
 AC_PROG_MAKE_SET
 
