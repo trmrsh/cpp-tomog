@@ -4,3 +4,11 @@ C++ doppler tomography programs.
 Installation order: subs, mem --> colly --> tomog
 
 See www.astro.warwick.ac.uk/people/marsh/software for further info
+
+Installation
+------------
+
+Main installation notes are in 'INSTALL'. If installing for the first time,
+run './bootstrap' before anything else which tries to get the autotools 
+stuff configured.
+
